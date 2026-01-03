@@ -1,7 +1,7 @@
 class Coordinates:
     __slots__ = ['__x', '__y']
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, /):
         self.__x = x
         self.__y = y
 

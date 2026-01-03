@@ -73,8 +73,11 @@ class EnvironmentManager:
             for x in range(field_width):
                 if field[y][x] == enemy:
                     cx, cy = x, y
-                    break
-            if cx != -1: break
+                    break # Перериває внутрішній цикл
+            #if cx != -1: break
+            else:
+                continue # Виконується ТІЛЬКИ якщо внутрішній цикл НЕ було перервано (ворога не знайдено в цьому рядку)
+            break # Перериває зовнішній цикл, якщо ворога знайдено
         
         if cx == -1: return # Enemy not found on field
         
