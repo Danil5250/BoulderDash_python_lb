@@ -6,3 +6,4 @@ class EmptinessConfig:
     EMPTINESS_COLOR = (0, 0, 0)
     CAN_STONE_FALL_AT_EMPTINESS = True
     EMPTINESS_TO_STRING = "emptiness"
+    CAN_STONE_MOVE_AT_EMPTINESS = True

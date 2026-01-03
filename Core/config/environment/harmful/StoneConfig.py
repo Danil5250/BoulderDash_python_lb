@@ -5,3 +5,6 @@ class StoneConfig:
     CAN_PLAYER_PASS = False
     STONE_DAMAGE_PLAYER = 1
     STONE_TO_STRING = "stone"
+    FALL_DELAY = 10
+    FALL_TIMER = 0
+    IS_FALLING = False

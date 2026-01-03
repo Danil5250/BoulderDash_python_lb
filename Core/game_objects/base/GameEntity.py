@@ -10,4 +10,10 @@ class GameEntity:
 
     def can_stone_move_here(self):
         return False
+    
+    def can_stone_fall_here(self):
+        return False
+    
+    def can_enemy_move_on(self):
+        return False
 
