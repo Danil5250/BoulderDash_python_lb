@@ -16,28 +16,33 @@ class EnvironmentManager:
                 entity = field[y][x]
 
                 if isinstance(entity, Stone):
-                    if field[y+1][x].can_stone_fall_here():
-                        
-                        if not entity.is_falling:
-                            entity.is_falling = True
-                            entity.fall_timer = entity.fall_delay
-                        else:
-                            entity.fall_timer -= 1
+                    is_falling = EnvironmentManager.process_stone_falling(field, player, y, x, entity)
+                    if not is_falling:
+                        EnvironmentManager.reset_stone(entity)
 
-                            if entity.fall_timer <= 0:                                
-                                if player.coordinates.x == x and player.coordinates.y == y + 2:
-                                    player.decrease_lives()
-                                else:
-                                    field[y+1][x] = entity
-                                field[y][x] = Emptiness()
-                                EnvironmentManager.reset_stone(entity)
-                    elif player.coordinates.x == x and player.coordinates.y == y + 2 and entity.is_falling:
-                        player.decrease_lives()
-                        field[y+1][x] = entity
-                        field[y][x] = Emptiness()
-                        EnvironmentManager.reset_stone(entity)
-                    else:
-                        EnvironmentManager.reset_stone(entity)
+    @staticmethod
+    def process_stone_falling(field, player, y, x, entity):
+        
+        if field[y + 1][x].can_stone_fall_here():
+            if not entity.is_falling:
+                entity.is_falling = True
+                entity.fall_timer = entity.fall_delay
+                return True
+            
+            entity.fall_timer -= 1
+
+            if entity.fall_timer <= 0:                                
+                if player.coordinates.x == x and player.coordinates.y == (y + 2):
+                    player.decrease_lives()
+                else:
+                    field[y + 1][x] = entity
+                field[y][x] = Emptiness()
+                # make stone fall slower than it falls immidiately
+                return False
+            
+            return True
+        
+        return False
     
     @staticmethod
     def update_bombs(field, field_width, field_height, main_manager):
@@ -102,7 +107,6 @@ class EnvironmentManager:
                         field[ny][nx] = enemy
                         field[cy][cx] = Emptiness()
                  else:
-                     # Blocked by something that moved there recently?
                      # Revert internal position
                      enemy.position.x = cx
                      enemy.position.y = cy

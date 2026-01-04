@@ -92,36 +92,50 @@ class FieldUtils:
                 if not field[y][x].can_enemy_move_on():
                     bool_field[y][x] = False
         return bool_field
-    
+
+    # find the farest point from (start_x, start_y) using BFS (пошук у ширину)
     @staticmethod
     def find_farthest_point(map_, height, width, start_x, start_y):
         # distances[y][x] = distance from start, -1 if not visited
+        # matrix with -1
         distances = [[-1 for _ in range(width)] for _ in range(height)]
-
+        
+        # створення двосторонньої черги
         queue = deque()
+        # початкова клітинка
         queue.append((start_x, start_y))
+        # відстань до початкової клітинки 0
         distances[start_y][start_x] = 0
 
+        # спочатку найдальша точка - це початкова
         farthest_x, farthest_y = start_x, start_y
         max_distance = 0
 
         dx = [1, -1, 0, 0]
         dy = [0, 0, 1, -1]
 
+        # поки черга не порожня
         while queue:
+            # витягуємо перший елемент з черги
             x, y = queue.popleft()
+            
+            # відстань до поточної клітинки
             current_distance = distances[y][x]
-
+            
+            # якщо клітинка далі за всі попередні, оновлюємо найдальшу точку
             if current_distance > max_distance:
                 max_distance = current_distance
                 farthest_x, farthest_y = x, y
 
             for i in range(4):
+            # перебираємо всі 4 напрямки
                 new_x = x + dx[i]
                 new_y = y + dy[i]
 
+            # якщо нова клітинка в межах поля і прохідна і ще не відвідана
                 if 0 <= new_x < width and 0 <= new_y < height:
                     if map_[new_y][new_x] and distances[new_y][new_x] == -1:
+            # збільшуємо відстань до клітинки і запускуємо її в чергу
                         distances[new_y][new_x] = current_distance + 1
                         queue.append((new_x, new_y))
 
